@@ -48,10 +48,11 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
       KAFKA_HEAP_OPTS: "-Xmx256m -Xms128m"
     healthcheck:
-      test: ["CMD-SHELL", "echo ruok | nc localhost 2181 | grep imok"]
+      test: ["CMD-SHELL", "echo ruok | timeout 5 nc -w 2 localhost 2181 | grep -q imok"]
       interval: 10s
-      timeout: 5s
+      timeout: 8s
       retries: 20
+      start_period: 15s
 
   # ─── Kafka ────────────────────────────────────────────────────────────────
   kafka:
@@ -130,10 +131,11 @@ services:
       - minio_data:/data
     command: server /data --console-address ":9001"
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:9000/minio/health/live"]
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:9000/minio/health/live"]
       interval: 10s
       timeout: 5s
       retries: 20
+      start_period: 10s
 
   # ─── MinIO bucket init ────────────────────────────────────────────────────
   minio-init:
