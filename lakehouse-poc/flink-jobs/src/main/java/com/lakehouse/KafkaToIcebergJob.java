@@ -140,7 +140,7 @@ public class KafkaToIcebergJob {
                 .setGroupId(CONSUMER_GROUP)
                 .setStartingOffsets(OffsetsInitializer.earliest())
                 .setValueOnlyDeserializer(new SimpleStringSchema())
-                .append();
+                .build();
 
         return env.fromSource(source, WatermarkStrategy.noWatermarks(), "kafka-" + uid);
     }
