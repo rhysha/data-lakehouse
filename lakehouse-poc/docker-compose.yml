@@ -297,7 +297,7 @@ services:
       - /bin/sh
       - -c
       - |
-        pip install --quiet trino clickhouse-connect &&
+        pip install --quiet trino "clickhouse-connect==0.7.0" &&
         superset db upgrade &&
         superset fab create-admin \
           --username admin \
