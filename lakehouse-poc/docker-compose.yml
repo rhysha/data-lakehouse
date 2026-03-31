@@ -1,5 +1,3 @@
-version: "3.9"
-
 networks:
   lakehouse:
     driver: bridge
@@ -81,8 +79,8 @@ services:
       test: ["CMD-SHELL", "kafka-broker-api-versions --bootstrap-server localhost:9092 > /dev/null 2>&1"]
       interval: 15s
       timeout: 10s
-      retries: 20
-      start_period: 30s
+      retries: 30
+      start_period: 60s
 
   # ─── Kafka Connect (Debezium) ──────────────────────────────────────────────
   kafka-connect:
