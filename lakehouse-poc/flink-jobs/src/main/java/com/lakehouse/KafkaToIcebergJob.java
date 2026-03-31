@@ -98,7 +98,7 @@ public class KafkaToIcebergJob {
                         catalogLoader, TableIdentifier.of(Namespace.of("bronze"), "customers")))
                 .upsert(true)
                 .equalityFieldColumns(Collections.singletonList("id"))
-                .build();
+                .append();
 
         // ── 5. Wire products ─────────────────────────────────────────────────
         DataStream<RowData> productsStream =
@@ -111,7 +111,7 @@ public class KafkaToIcebergJob {
                         catalogLoader, TableIdentifier.of(Namespace.of("bronze"), "products")))
                 .upsert(true)
                 .equalityFieldColumns(Collections.singletonList("id"))
-                .build();
+                .append();
 
         // ── 6. Wire orders ───────────────────────────────────────────────────
         DataStream<RowData> ordersStream =
@@ -124,7 +124,7 @@ public class KafkaToIcebergJob {
                         catalogLoader, TableIdentifier.of(Namespace.of("bronze"), "orders")))
                 .upsert(true)
                 .equalityFieldColumns(Collections.singletonList("id"))
-                .build();
+                .append();
 
         env.execute("KafkaToIcebergJob");
     }
@@ -140,7 +140,7 @@ public class KafkaToIcebergJob {
                 .setGroupId(CONSUMER_GROUP)
                 .setStartingOffsets(OffsetsInitializer.earliest())
                 .setValueOnlyDeserializer(new SimpleStringSchema())
-                .build();
+                .append();
 
         return env.fromSource(source, WatermarkStrategy.noWatermarks(), "kafka-" + uid);
     }
